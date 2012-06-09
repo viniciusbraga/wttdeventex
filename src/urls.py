@@ -6,8 +6,9 @@ from django.conf.urls import patterns, include, url
 # from django.contrib import admin
 # admin.autodiscover()
 
-urlpatterns = patterns('src.core.views',
-	url(r'^$', 'homepage', name='homepage'),
+urlpatterns = patterns('src',
+	url(r'^$', 'core.views.homepage', name='homepage'),
+	url(r'^inscricao/', include('src.subscriptions.urls', namespace='subscriptions')),
     # Examples:
     # url(r'^$', 'src.views.home', name='home'),
     # url(r'^src/', include('src.foo.urls')),
