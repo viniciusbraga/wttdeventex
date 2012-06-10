@@ -2,7 +2,8 @@
 
 from django.test import TestCase
 from django.core.urlresolvers import reverse as r
-
+from .models import Subscription
+from django.db import IntegrityError
 
 class SubscriptionsUlrTest(TestCase):
 
@@ -28,4 +29,56 @@ class SubscribeViewTest(TestCase):
     def test_use_template_subscribe(self):
         "Não encontrou o template da inscrição."
         self.assertTemplateUsed(self.resp, 'subscriptions/subscription_form.html')
+
+
+
+class SubscriptionTeste(TestCase):
+
+    def test_create(self):
+        'O modelo deve ter os campos : name, cpf, email, phone, created_at'
+        s = Subscription.objects.create(
+            name = 'Vinicius Braga',
+            cpf = '01234567891',
+            email = 'vini@vini.com',
+            phone = '21-22222222'
+            # created_at é automático
+        )
+        self.assertEquals(s.id, 1)
+
+
+
+class SubscriptionModelUniqueTest(TestCase):
+
+    def setUp(self):
+        # Cria uma primeira inscrição no banco.
+        Subscription.objects.create(
+            name = 'Vinicius Braga',
+            cpf = '01234567891',
+            email = 'vini@vini.com',
+            phone = '21-22222222'
+            )
+
+    def test_cpf_must_be_unique(self):
+        'CPF deve ser único'
+        # Instancia a inscrição com o CPF já existente e criado no setUP.
+        s = Subscription(
+            name = 'Vinicius Braga',
+            cpf = '01234567891',
+            email = 'outro@vini.com',
+            phone = '21-22222222'
+            )
+        # Verifica se ocorre o erro de integridade ao persistir.
+        self.assertRaises(IntegrityError, s.save)
+
+    def test_email_must_be_unique(self):
+        'Email deve ser único'
+        # Instancia a inscrição com o Email já existente e criado no setUP.
+        s = Subscription(
+            name = 'Vinicius Braga',
+            cpf = '00000000000',
+            email = 'vini@vini.com',
+            phone = '21-22222222'
+            )
+        # Verifica se ocorre o erro de integridade ao persistir.
+        self.assertRaises(IntegrityError, s.save)
 
