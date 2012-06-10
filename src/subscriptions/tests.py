@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse as r
 
 
-class SubscriptionUlrTest(TestCase):
+class SubscriptionsUlrTest(TestCase):
 
     def test_get_subscribe_instance(self):
         response = self.client.get( r('subscriptions:subscribe') )
