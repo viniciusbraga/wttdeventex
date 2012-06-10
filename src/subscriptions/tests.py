@@ -17,6 +17,7 @@ class SubscriptionsUlrTest(TestCase):
 
 
 class SubscribeViewTest(TestCase):
+
     def setUp(self):
         self.resp = self.client.get(r('subscriptions:subscribe'))
 
