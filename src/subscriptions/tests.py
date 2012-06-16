@@ -2,8 +2,9 @@
 
 from django.test import TestCase
 from django.core.urlresolvers import reverse as r
-from .models import Subscription
 from django.db import IntegrityError
+from .models import Subscription
+from .forms import SubscriptionForm
 
 class SubscriptionsUlrTest(TestCase):
 
@@ -30,9 +31,23 @@ class SubscribeViewTest(TestCase):
         "Não encontrou o template da inscrição."
         self.assertTemplateUsed(self.resp, 'subscriptions/subscription_form.html')
 
+    def test_has_form(self):
+        "A resposta deve conter o formulário de inscrição."
+        self.assertIsInstance(self.resp.context['form'], SubscriptionForm)
 
+    def test_form_has_fields(self):
+        "O formulário deve conter os campos: name, email, cpf e phone"
+        form = self.resp.context['form']
+        self.assertItemsEqual(['name', 'email', 'cpf', 'phone'], form.fields)
 
-class SubscriptionTeste(TestCase):
+    def test_html(self):
+        "O html deve conter os campos do formulário"
+        self.assertContains(self.resp, '<form')
+        self.assertContains(self.resp, '<input', 6)
+        self.assertContains(self.resp, 'type="text"', 4)
+        self.assertContains(self.resp, 'type="submit"')
+
+class SubscriptionModelTeste(TestCase):
 
     def test_create(self):
         'O modelo deve ter os campos : name, cpf, email, phone, created_at'
@@ -81,4 +96,24 @@ class SubscriptionModelUniqueTest(TestCase):
             )
         # Verifica se ocorre o erro de integridade ao persistir.
         self.assertRaises(IntegrityError, s.save)
+
+class SubscribeViewPostTest(TestCase):
+
+    def setUp(self):
+        data = dict(name='Henrique Bastos', cpf='00000000000', email='vini@vini.com', phone='21-96186180')
+        self.resp = self.client.post( r('subscriptions:subscribe'), data )
+
+    def test_show_page(self):
+        "Post inválido não deve redirecionar."
+        self.assertEqual(200, self.resp.status_code)
+
+    def test_form_erros(self):
+        "Form deve conter erros."
+        self.assertTrue(self.resp.context['form'].errors)
+
+    def test_must_not_save(self):
+        "Dados não devem ser salvos"
+        self.assertFalse( Subscription.objects.exists() )
+
+
 
