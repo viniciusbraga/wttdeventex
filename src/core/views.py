@@ -1,7 +1,7 @@
 # coding: utf-8
 
-from django.views.generic.simple import direct_to_template
-
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 def homepage(request):
-  return direct_to_template(request, template='index.html')
+  return render_to_response('index.html', RequestContext(request))

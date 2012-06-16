@@ -13,16 +13,16 @@ def subscribe(request):
     return new(request)
 
 def new(request):
-  return direct_to_template( 'subscriptions/subscription_form.html',
+  return direct_to_template(request, 'subscriptions/subscription_form.html',
                              {'form': SubscriptionForm()})
 
 def create(request):
   form = SubscriptionForm( request.POST )
 
   if not form.is_valid():
-      return direct_to_template( 'subscriptions/subscription_form.html',
+      return direct_to_template(request, 'subscriptions/subscription_form.html',
                                  {'form': form })
   subscription = form.save()
   return HttpResponseRedirect( r('subscriptions:success',
-                             args= [ subscription.pk]) )
+                             args= [ subscription.pk]))
 

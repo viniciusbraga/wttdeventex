@@ -103,13 +103,13 @@ class SubscribeViewPostTest(TestCase):
         data = dict(name='Henrique Bastos', cpf='00000000000', email='vini@vini.com', phone='21-96186180')
         self.resp = self.client.post( r('subscriptions:subscribe'), data )
 
-    def SubscribeViewPostTest(TestCase):
+    def test_redirects(TestCase):
         "Post deve redirecionar para a página de sucesso."
-        self.assertRedirects( self.resp, r('susbcriptions:seccess', args=[1]) )
+        self.assertRedirects( self.resp, r('susbcriptions:success', args=[1]) )
 
     def test_save(self):
         "Post deve salvar Subscription no banco."
-        self.assertTrue( Subscription.objects.exists() )
+        self.assertTrue(Subscription.objects.exists())
 
 class SubscribeViewInvalidPostTest(TestCase):
 
