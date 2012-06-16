@@ -264,30 +264,30 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   float: left;
 }
 /* Form Errors */
-.errorList {
+.errorlist {
   color: red;
 }
-.errorList li + li,
-.errorList dd + dd {
+.errorlist li + li,
+.errorlist dd + dd {
   line-height: 1.3em;
   margin: 0;
   padding-bottom:0.7em;
 }
-.errorList dt {
+.errorlist dt {
   line-height: 1.0em;
 }
-.errorList dd {
+.errorlist dd {
   padding-left:1em;
 }
-.formRow .errorList {
+.formRow .errorlist {
   margin: 0;
   padding: 0 0 0 1em;
   border-left: 6px solid #F66;
   list-style: none;
 }
-.formRow .errorList + input,
-.formRow .errorList + input + input,
-.formRow .errorList + textarea,
+.formRow .errorlist + input,
+.formRow .errorlist + input + input,
+.formRow .errorlist + textarea,
 .errorInput input {
   margin: 0 0 6px;
   padding: 4px 0 5px 5px;
