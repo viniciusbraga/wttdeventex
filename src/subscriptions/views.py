@@ -1,8 +1,9 @@
 # coding: utf-8
 
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.views.generic.simple import direct_to_template
 from django.core.urlresolvers import reverse as r
+from django.shortcuts import get_object_or_404
 
 from .forms import SubscriptionForm
 
@@ -26,3 +27,9 @@ def create(request):
   return HttpResponseRedirect( r('subscriptions:success',
                              args= [ subscription.pk]))
 
+def success(request, pk):
+    subscription = get_object_or_404(Subscription, pk=pk)
+
+    return direct_to_template(request,
+                              'subscriptions/subscription_detail.html',
+                              {'subscription': subscription})
